@@ -1,0 +1,25 @@
+:root {
+  --primary-color: #6c5ce7;
+  --primary-hover: #5541d1;
+  --accent-yellow: #f1c40f;
+  --accent-green: #00b894;
+  --danger-color: #ff7675;
+
+  --bg-main: #f3e5f5;
+  --bg-card: #ffffff;
+  --bg-input: #fdfaf2;
+
+  --text-main: #2d3436;
+  --text-light: #636e72;
+
+  --shadow-soft: 0 4px 15px rgba(108, 92, 231, 0.1);
+  --radius: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: "Fredoka", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}

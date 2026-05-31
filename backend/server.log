@@ -1,0 +1,87 @@
+[2026-02-03 00:25:25] AUTH: Successful login for: Dasha
+[2026-02-03 00:25:50] DATA: Added group: Funny Clouds
+[2026-02-03 00:30:22] TURNIQUET: Child Masha (Group: Sunshine) - Exited
+[2026-02-03 00:30:32] TURNIQUET: Child Masha (Group: Sunshine) - Entered
+[2026-02-03 00:30:42] TURNIQUET: Child Masha (Group: Sunshine) - Exited
+[2026-02-03 00:31:02] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 00:31:22] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 00:31:32] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 00:42:02] AUTH: Failed login for: Mama
+[2026-02-03 01:29:19] AUTH: Successful login for: Dasha
+[2026-02-03 01:29:58] DATA: Updated child: Masha
+[2026-02-03 01:30:10] DATA: Updated group: Sunshine
+[2026-02-03 01:34:51] DATA: Added announcement: Happy Birthday DEN!!!
+[2026-02-03 11:31:56] AUTH: Successful login for: Dasha
+[2026-02-03 12:21:02] AUTH: Successful login for: Dasha
+[2026-02-03 12:22:15] AUTH: Registered new user: mama (parent)
+[2026-02-03 12:22:17] AUTH: Successful login for: mama
+[2026-02-03 12:23:06] DATA: Added child: Nora
+[2026-02-03 12:23:36] AUTH: Successful login for: Dasha
+[2026-02-03 13:14:51] AUTH: Successful login for: Dasha
+[2026-02-03 13:17:55] AUTH: Successful login for: mama
+[2026-02-03 14:12:44] LINK: Linked Parent dad to Child Masha (CARD_1)
+[2026-02-03 14:12:44] AUTH: Registered new user: dad (parent)
+[2026-02-03 14:12:46] AUTH: Successful login for: dad
+[2026-02-03 15:26:32] AUTH: Successful login for: dad
+[2026-02-03 15:26:47] AUTH: Successful login for: Dasha
+[2026-02-03 15:27:00] ADMIN: Deleted user: Mama
+[2026-02-03 16:14:21] LINK: Linked Parent Mira to Child Den (CARD_3)
+[2026-02-03 16:14:21] AUTH: Registered new user: Mira (parent)
+[2026-02-03 16:14:23] AUTH: Successful login for: Mira
+[2026-02-03 16:14:40] AUTH: Password changed for user ID: 69821eddaabddc3bf02cf2f5
+[2026-02-03 16:14:54] AUTH: Successful login for: Mira
+[2026-02-03 16:15:11] AUTH: Successful login for: Dasha
+[2026-02-03 17:06:12] AUTH: Successful login for: Dasha
+[2026-02-03 17:06:36] AUTH: Successful login for: Mira
+[2026-02-03 17:35:56] AUTH: Successful login for: Dasha
+[2026-02-03 17:36:23] AUTH: Successful login for: Mira
+[2026-02-03 17:51:49] AUTH: Successful login for: Dasha
+[2026-02-03 18:10:57] AUTH: Successful login for: Dasha
+[2026-02-03 18:19:08] AUTH: Successful login for: Dasha
+[2026-02-03 18:21:38] AUTH: Successful login for: Dasha
+[2026-02-03 18:23:39] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:23:49] TURNIQUET: Child Masha (Group: Funny Clouds) - Entered
+[2026-02-03 18:24:07] DATA: Added group: Happy Kids
+[2026-02-03 18:24:09] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:24:39] TURNIQUET: Child Masha (Group: Funny Clouds) - Exited
+[2026-02-03 18:24:49] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:25:00] DATA: Added announcement: 25 February is weekend
+[2026-02-03 18:25:20] TURNIQUET: Child Masha (Group: Funny Clouds) - Entered
+[2026-02-03 18:25:29] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:25:38] DATA: Added child: Jan
+[2026-02-03 18:25:39] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:26:09] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:26:13] LINK: Linked Parent Mark to Child Nora (CARD_4)
+[2026-02-03 18:26:13] AUTH: Registered new user: Mark (parent)
+[2026-02-03 18:26:14] AUTH: Successful login for: Mark
+[2026-02-03 18:26:19] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:26:49] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:27:09] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:27:19] TURNIQUET: Child Masha (Group: Funny Clouds) - Exited
+[2026-02-03 18:27:29] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:27:39] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:27:59] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:28:09] TURNIQUET: Child Masha (Group: Funny Clouds) - Entered
+[2026-02-03 18:28:19] TURNIQUET: Child Masha (Group: Funny Clouds) - Exited
+[2026-02-03 18:28:29] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 18:28:39] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 18:28:49] TURNIQUET: Child Masha (Group: Funny Clouds) - Entered
+[2026-02-03 18:29:09] AUTH: Successful login for: Dasha
+[2026-02-03 20:10:14] AUTH: Successful login for: Dasha
+[2026-02-03 22:32:56] AUTH: Successful login for: Dasha
+[2026-02-03 22:37:39] TURNIQUET: Child Nora (Group: Funny Clouds) - Entered
+[2026-02-03 22:37:59] TURNIQUET: Child Masha (Group: Funny Clouds) - Exited
+[2026-02-03 22:38:09] TURNIQUET: Child Mia (Group: Sunshine) - Exited
+[2026-02-03 22:38:19] TURNIQUET: Child Masha (Group: Funny Clouds) - Entered
+[2026-02-03 22:38:39] TURNIQUET: Child Mia (Group: Sunshine) - Entered
+[2026-02-03 22:38:59] TURNIQUET: Child Masha (Group: Funny Clouds) - Exited
+[2026-02-03 22:39:09] TURNIQUET: Child Nora (Group: Funny Clouds) - Exited
+[2026-02-03 22:39:19] TURNIQUET: Child Nora (Group: Funny Clouds) - Entered
+[2026-02-03 23:00:20] AUTH: Successful login for: Dasha
+[2026-02-03 23:01:09] AUTH: Successful login for: Mira
+[2026-02-04 10:55:36] AUTH: Successful login for: Dasha
+[2026-02-04 16:25:43] AUTH: Successful login for: Dasha
+[2026-02-04 16:27:10] AUTH: Successful login for: Mira
+[2026-02-04 16:32:38] AUTH: Successful login for: Dasha
+[2026-02-04 16:36:52] TURNIQUET: Child Masha (Group: Funny Clouds) - Entered
+[2026-02-04 16:37:02] TURNIQUET: Child Den (Group: Sunshine) - Entered
