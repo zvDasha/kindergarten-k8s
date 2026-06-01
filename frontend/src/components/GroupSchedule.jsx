@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./groupSchedule.css";
 
-const API_URL = "http://localhost:3000/api";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+const API_URL = `${BACKEND_URL}/api`;
 
 const GroupSchedule = ({ groupId, userRole }) => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,38 +1,32 @@
-version: "3.8"
-
 services:
-  # 1. Сервіс Бази Даних
   mongodb:
     image: mongo:6.0
     container_name: kindergarten_db
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db # Це забезпечує збереження даних (trwały storage)
+      - mongo_data:/data/db
 
-  # 2. Сервіс Бекенду
   backend:
     build: ./backend
     container_name: kindergarten_backend
     ports:
       - "3000:3000"
     environment:
-      # Вказуємо бекенду підключатися до локальної бази в Докері
       - MONGO_URI=mongodb://mongodb:27017/kindergarten
-      # Вказуємо бекенду дозволяти CORS-запити від фронтенду, який буде висіти на 8080 порту
       - FRONTEND_URL=http://localhost:8080
     depends_on:
-      - mongodb # Запускати бекенд тільки після старту БД
+      - mongodb
 
-  # 3. Сервіс Фронтенду
   frontend:
     build: ./frontend
     container_name: kindergarten_frontend
     ports:
-      - "8080:80" # Мапимо 80-й порт Nginx всередині контейнера на 8080 порт твого комп'ютера
+      - "8080:80"
+    environment:
+      - VITE_BACKEND_URL=http://localhost:3000
     depends_on:
       - backend
 
-# Оголошуємо том для збереження бази даних
 volumes:
   mongo_data:

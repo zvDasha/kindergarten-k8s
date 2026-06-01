@@ -32,8 +32,7 @@ const io = new Server(server, {
   },
 });
 const MONGO_URI =
-  process.env.MONGO_URI ||
-  "mongodb+srv://dzverieva_db_user:db_psw_2026@psw2026.8e3tqth.mongodb.net/?appName=PSW2026";
+  process.env.MONGO_URI || "mongodb://localhost:27017/kindergarten";
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
