@@ -14,7 +14,10 @@ services:
       - "3000:3000"
     environment:
       - MONGO_URI=mongodb://mongodb:27017/kindergarten
-      - FRONTEND_URL=http://localhost:8080
+      # Змінено на 127.0.0.1 для стабільності з'єднання
+      - FRONTEND_URL=http://127.0.0.1:8080
+      # Додано JWT_SECRET, щоб авторизація не видавала помилку 403
+      - JWT_SECRET=supersecret123
     depends_on:
       - mongodb
 
@@ -24,7 +27,8 @@ services:
     ports:
       - "8080:80"
     environment:
-      - VITE_BACKEND_URL=http://localhost:3000
+      # Змінено на 127.0.0.1, щоб браузер не конфліктував з localhost
+      - VITE_BACKEND_URL=http://127.0.0.1:3000
     depends_on:
       - backend
 

@@ -33,7 +33,7 @@ spec:
               echo "MongoDB gotowy!"
       containers:
         - name: backend
-          image: ghcr.io/YOUR_GITHUB_USERNAME/kindergarten-backend:latest
+          image: ghcr.io/zvdasha/kindergarten-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

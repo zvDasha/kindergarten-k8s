@@ -8,10 +8,9 @@ import "./App.css";
 import Login from "./Login";
 import DataForm from "./components/newChildForm";
 import DataList from "./components/cardList";
+import { API_URL, BACKEND_URL } from "./config";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
 const socket = io(BACKEND_URL);
-const API_URL = `${BACKEND_URL}/api`;
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem("token");

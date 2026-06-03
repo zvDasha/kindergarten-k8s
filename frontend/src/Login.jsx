@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "./App.css";
+import { BACKEND_URL } from "./config";
 
 function Login({ onLogin }) {
   const [isRegister, setIsRegister] = useState(false);
@@ -45,7 +46,7 @@ function Login({ onLogin }) {
     };
 
     try {
-      const res = await axios.post(`http://localhost:3000${endpoint}`, payload);
+      const res = await axios.post(`${BACKEND_URL}${endpoint}`, payload);
 
       if (isRegister) {
         toast.success("Account created! Please log in now.");

@@ -3,22 +3,27 @@ kind: Ingress
 metadata:
   name: app-ingress
   namespace: kindergarten
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
     - http:
         paths:
-          - path: /api(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /socket.io
+            pathType: Prefix
             backend:
               service:
                 name: backend
                 port:
                   number: 3000
-          - path: /()(.*)
-            pathType: ImplementationSpecific
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 3000
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: frontend

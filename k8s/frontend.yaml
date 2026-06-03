@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/YOUR_GITHUB_USERNAME/kindergarten-frontend:latest
-          imagePullPolicy: IfNotPresent
+          image: kindergarten-frontend:k8s
+          imagePullPolicy: Never
           ports:
             - containerPort: 80
           resources:
