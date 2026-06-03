@@ -40,11 +40,11 @@ jobs:
 
       - name: Wait for Ingress controller to be ready
         run: |
-          echo "Waiting for Ingress controller pods..."
           kubectl wait --namespace ingress-nginx \
             --for=condition=ready pod \
             --selector=app.kubernetes.io/component=controller \
             --timeout=90s
+          kubectl delete validatingwebhookconfiguration ingress-nginx-admission --ignore-not-found
 
       - name: Set image names in manifests
         run: |
