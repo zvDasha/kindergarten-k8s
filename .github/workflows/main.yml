@@ -38,6 +38,14 @@ jobs:
       - name: Enable ingress addon
         run: minikube addons enable ingress
 
+      - name: Wait for Ingress controller to be ready
+        run: |
+          echo "Waiting for Ingress controller pods..."
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=90s
+
       - name: Set image names in manifests
         run: |
           sed -i "s/YOUR_GITHUB_USERNAME/${{ env.OWNER_LC }}/g" k8s/backend.yaml k8s/frontend.yaml
