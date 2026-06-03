@@ -2,8 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: kindergarten
 spec:
-  replicas: 1
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: backend
@@ -12,22 +18,76 @@ spec:
       labels:
         app: backend
     spec:
+      # initContainer czeka aż MongoDB będzie gotowy zanim wystartuje backend
+      initContainers:
+        - name: wait-for-mongo
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z mongodb 27017; do
+                echo "Czekam na MongoDB..."
+                sleep 3
+              done
+              echo "MongoDB gotowy!"
       containers:
         - name: backend
-          image: technologii_chmurowe-backend:latest
+          image: ghcr.io/YOUR_GITHUB_USERNAME/kindergarten-backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
+          # Zmienne niepoufne z ConfigMap
           env:
             - name: MONGO_URI
-              value: "mongodb://mongodb:27017/kindergarten"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MONGO_URI
             - name: FRONTEND_URL
-              value: "http://localhost:30000"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: FRONTEND_URL
+            - name: MQTT_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MQTT_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: JWT_SECRET
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: backend
+  namespace: kindergarten
 spec:
   selector:
     app: backend

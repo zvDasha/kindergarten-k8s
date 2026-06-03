@@ -1,5 +1,5 @@
 const mqtt = require("mqtt");
-const client = mqtt.connect("mqtt://test.mosquitto.org");
+const client = mqtt.connect(process.env.MQTT_URL || "mqtt://mqtt:1883");
 
 const cards = [
   "CARD_1",

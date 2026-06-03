@@ -1,55 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: mqtt
   namespace: kindergarten
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: mqtt
   template:
     metadata:
       labels:
-        app: frontend
+        app: mqtt
     spec:
       containers:
-        - name: frontend
-          image: ghcr.io/YOUR_GITHUB_USERNAME/kindergarten-frontend:latest
-          imagePullPolicy: IfNotPresent
+        - name: mqtt
+          image: eclipse-mosquitto:2
           ports:
-            - containerPort: 80
+            - containerPort: 1883
           resources:
             requests:
               cpu: "50m"
-              memory: "64Mi"
+              memory: "32Mi"
             limits:
-              cpu: "200m"
-              memory: "128Mi"
+              cpu: "100m"
+              memory: "64Mi"
           securityContext:
             allowPrivilegeEscalation: false
           readinessProbe:
-            httpGet:
-              path: /
-              port: 80
+            tcpSocket:
+              port: 1883
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /
-              port: 80
+            tcpSocket:
+              port: 1883
             initialDelaySeconds: 10
             periodSeconds: 20
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: mqtt
   namespace: kindergarten
 spec:
-  type: ClusterIP
+  # Tylko wewnętrzny dostęp
   selector:
-    app: frontend
+    app: mqtt
   ports:
-    - port: 80
-      targetPort: 80
+    - protocol: TCP
+      port: 1883
+      targetPort: 1883

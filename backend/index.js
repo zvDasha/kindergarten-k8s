@@ -20,8 +20,9 @@ const path = require("path");
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.get("/health", (req, res) => res.status(200).json({ status: "ok" }));
 
-const JWT_SECRET = "super_secret_kindergarten_key_2026";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const server = http.createServer(app);
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
@@ -59,7 +60,7 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-const mqttClient = mqtt.connect("mqtt://test.mosquitto.org");
+const mqttClient = mqtt.connect(process.env.MQTT_URL || "mqtt://mqtt:1883");
 mqttClient.on("connect", () => mqttClient.subscribe("kindergarten/gate"));
 
 mqttClient.on("message", async (topic, message) => {
