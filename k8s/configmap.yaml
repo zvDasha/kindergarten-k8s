@@ -7,3 +7,5 @@ data:
   MONGO_URI: "mongodb://mongodb:27017/kindergarten"
   FRONTEND_URL: "http://127.0.0.1,http://localhost,http://127.0.0.1:8080,http://localhost:8080"
   MQTT_URL: "mqtt://mqtt:1883"
+  AUTH0_DOMAIN: "dev-s75g8np76uar4fon.us.auth0.com"
+  AUTH0_AUDIENCE: "https://kindergarten-api"
