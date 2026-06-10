@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Run backend tests
+        run: |
+          cd backend
+          npm install
+          npm test
 
       - name: Downcase repository owner
         run: echo "OWNER_LC=${OWNER,,}" >> $GITHUB_ENV

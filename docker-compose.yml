@@ -14,10 +14,9 @@ services:
       - "3000:3000"
     environment:
       - MONGO_URI=mongodb://mongodb:27017/kindergarten
-      # Змінено на 127.0.0.1 для стабільності з'єднання
-      - FRONTEND_URL=http://127.0.0.1:8080
-      # Додано JWT_SECRET, щоб авторизація не видавала помилку 403
-      - JWT_SECRET=supersecret123
+      - FRONTEND_URL=http://localhost:8080
+      - AUTH0_DOMAIN=dev-s75g8np76uar4fon.us.auth0.com
+      - AUTH0_AUDIENCE=https://kindergarten-api
     depends_on:
       - mongodb
 
@@ -27,8 +26,10 @@ services:
     ports:
       - "8080:80"
     environment:
-      # Змінено на 127.0.0.1, щоб браузер не конфліктував з localhost
       - VITE_BACKEND_URL=http://127.0.0.1:3000
+      - VITE_AUTH0_DOMAIN=${AUTH0_DOMAIN}
+      - VITE_AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - VITE_AUTH0_AUDIENCE=${AUTH0_AUDIENCE}
     depends_on:
       - backend
 

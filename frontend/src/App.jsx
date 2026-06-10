@@ -1,27 +1,29 @@
+//replaced axios interceptor + localStorage with Auth0 hooks
 import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import io from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
-import Login from "./Login";
+//removed Login import — Auth0 handles login page
 import DataForm from "./components/newChildForm";
 import DataList from "./components/cardList";
 import { API_URL, BACKEND_URL } from "./config";
 
 const socket = io(BACKEND_URL);
 
-axios.interceptors.request.use(function (config) {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 function App() {
-  const [user, setUser] = useState(null);
+  const {
+    loginWithRedirect,
+    logout,
+    user,
+    isAuthenticated,
+    isLoading,
+    getAccessTokenSilently,
+  } = useAuth0();
+
   const [activeTab, setActiveTab] = useState("children");
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
@@ -42,22 +44,35 @@ function App() {
 
   const [newPassword, setNewPassword] = useState("");
 
+  //role is read from Auth0 token claim instead of API response
+  const roles = user?.["https://kindergarten/roles"] ?? [];
+  const userRole = roles.includes("admin") ? "admin" : "parent";
+
+  const getAuthHeader = async () => {
+    const token = await getAccessTokenSilently({
+      authorizationParams: { audience: import.meta.env.VITE_AUTH0_AUDIENCE },
+    });
+    return { Authorization: `Bearer ${token}` };
+  };
+
   const fetchData = async () => {
-    if (!user) return;
+    if (!isAuthenticated) return;
     if (activeTab === "profile") return;
 
     try {
+      const headers = await getAuthHeader();
       const params = {
         search: activeTab === "children" ? search : undefined,
-        parentId: user.id,
-        role: user.role,
       };
 
-      const res = await axios.get(`${API_URL}/${activeTab}`, { params });
+      const res = await axios.get(`${API_URL}/${activeTab}`, {
+        headers,
+        params,
+      });
       setItems(res.data);
 
       if (activeTab === "children") {
-        const groupsRes = await axios.get(`${API_URL}/groups`);
+        const groupsRes = await axios.get(`${API_URL}/groups`, { headers });
         setGroupsList(groupsRes.data);
       }
     } catch (err) {
@@ -67,7 +82,7 @@ function App() {
 
   useEffect(() => {
     fetchData();
-  }, [activeTab, search, user]);
+  }, [activeTab, search, isAuthenticated]);
 
   useEffect(() => {
     socket.on("update", (data) => {
@@ -75,7 +90,7 @@ function App() {
       if (activeTab !== "profile") fetchData();
     });
     return () => socket.off("update");
-  }, [activeTab, user]);
+  }, [activeTab, isAuthenticated]);
 
   const handleEditClick = (item) => {
     setFormData({
@@ -109,13 +124,14 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const dataToSend = { ...formData, parentId: user.id };
-
+      const headers = await getAuthHeader();
       if (isEditing) {
-        await axios.put(`${API_URL}/${activeTab}/${editId}`, dataToSend);
+        await axios.put(`${API_URL}/${activeTab}/${editId}`, formData, {
+          headers,
+        });
         toast.success("Successfully updated!");
       } else {
-        await axios.post(`${API_URL}/${activeTab}`, dataToSend);
+        await axios.post(`${API_URL}/${activeTab}`, formData, { headers });
         toast.success("Successfully added!");
       }
       resetForm();
@@ -128,7 +144,8 @@ function App() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete record?")) return;
     try {
-      await axios.delete(`${API_URL}/${activeTab}/${id}`);
+      const headers = await getAuthHeader();
+      await axios.delete(`${API_URL}/${activeTab}/${id}`, { headers });
       toast.warn("Deleted!");
       fetchData();
     } catch (err) {
@@ -139,7 +156,12 @@ function App() {
   const handleChangePassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${API_URL}/users/${user.id}/password`, { newPassword });
+      const headers = await getAuthHeader();
+      await axios.put(
+        `${API_URL}/users/${user.sub}/password`,
+        { newPassword },
+        { headers },
+      );
       toast.success("Password changed!");
       setNewPassword("");
     } catch (err) {
@@ -147,12 +169,44 @@ function App() {
     }
   };
 
-  if (!user) {
+  //replaced <Login> component with Auth0 loginWithRedirect
+  if (isLoading) return <div style={{ padding: "2rem" }}>Loading...</div>;
+
+  if (!isAuthenticated) {
     return (
-      <>
-        <ToastContainer position="top-right" />
-        <Login onLogin={(userData) => setUser(userData)} />
-      </>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div
+          className="form-card"
+          style={{ width: "320px", textAlign: "center" }}
+        >
+          <h2>Kindergarten</h2>
+          <p style={{ color: "#666", marginBottom: "20px" }}>
+            Please log in to continue
+          </p>
+          <button
+            onClick={() => loginWithRedirect()}
+            style={{
+              background: "var(--primary-color)",
+              color: "white",
+              border: "none",
+              padding: "12px 30px",
+              borderRadius: "30px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              fontSize: "1rem",
+            }}
+          >
+            Log In
+          </button>
+        </div>
+      </div>
     );
   }
 
@@ -161,16 +215,15 @@ function App() {
       <ToastContainer position="top-right" />
 
       <header>
-        <h1>Kindergarten: {user.name}</h1>
+        <h1>Kindergarten: {user.name || user.email}</h1>
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <span className="badge">
-            {user.role === "admin" ? "Admin" : "Parent"}
+            {userRole === "admin" ? "Admin" : "Parent"}
           </span>
           <button
-            onClick={() => {
-              setUser(null);
-              localStorage.removeItem("token");
-            }}
+            onClick={() =>
+              logout({ logoutParams: { returnTo: window.location.origin } })
+            }
             style={{
               background: "#ff7675",
               padding: "8px 15px",
@@ -212,7 +265,7 @@ function App() {
           >
             Announcements
           </button>
-          {user.role === "admin" && (
+          {userRole === "admin" && (
             <button
               onClick={() => {
                 setActiveTab("users");
@@ -223,7 +276,6 @@ function App() {
               Users
             </button>
           )}
-
           <button
             onClick={() => {
               setActiveTab("profile");
@@ -241,10 +293,10 @@ function App() {
           <div className="form-card">
             <h3>My Profile</h3>
             <p>
-              <strong>Username:</strong> {user.name}
+              <strong>Email:</strong> {user.email}
             </p>
             <p>
-              <strong>Role:</strong> {user.role}
+              <strong>Role:</strong> {userRole}
             </p>
             <hr />
             <h4>Change Password</h4>
@@ -292,7 +344,7 @@ function App() {
 
               {activeTab !== "users" &&
                 activeTab !== "profile" &&
-                user.role === "admin" && (
+                userRole === "admin" && (
                   <button
                     onClick={() => {
                       if (showForm) resetForm();
@@ -330,7 +382,7 @@ function App() {
               activeTab={activeTab}
               onDelete={handleDelete}
               onEdit={handleEditClick}
-              userRole={user.role}
+              userRole={userRole}
             />
           </>
         )}
