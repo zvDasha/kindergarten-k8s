@@ -3,18 +3,24 @@ import axios from "axios";
 import "./groupSchedule.css";
 import { API_URL } from "../config";
 
-const GroupSchedule = ({ groupId, userRole }) => {
+const GroupSchedule = ({ groupId, userRole, getAccessTokenSilently }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [schedule, setSchedule] = useState(null);
   const [activeDay, setActiveDay] = useState(null);
 
+  const getAuthHeader = async () => {
+    const token = await getAccessTokenSilently({
+      authorizationParams: { audience: import.meta.env.VITE_AUTH0_AUDIENCE },
+    });
+    return { Authorization: `Bearer ${token}` };
+  };
+
   const fetchSchedule = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
-      const res = await axios.get(`${API_URL}/schedule/${groupId}`, config);
+      const headers = await getAuthHeader();
+      const res = await axios.get(`${API_URL}/schedule/${groupId}`, {
+        headers,
+      });
       setSchedule(res.data);
     } catch (err) {
       console.error("Error fetching schedule:", err);
@@ -37,14 +43,11 @@ const GroupSchedule = ({ groupId, userRole }) => {
     setSchedule(updatedSchedule);
 
     try {
-      const token = localStorage.getItem("token");
-      const config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
+      const headers = await getAuthHeader();
       await axios.put(
         `${API_URL}/schedule/${groupId}`,
         { days: newDays },
-        config,
+        { headers },
       );
     } catch (err) {
       console.error("Error saving schedule:", err);

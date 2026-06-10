@@ -1,7 +1,14 @@
 import React from "react";
 import GroupSchedule from "./GroupSchedule";
 
-function DataList({ items, activeTab, onDelete, onEdit, userRole }) {
+function DataList({
+  items,
+  activeTab,
+  onDelete,
+  onEdit,
+  userRole,
+  getAccessTokenSilently,
+}) {
   return (
     <div className="grid">
       {items.map((item) => (
@@ -20,7 +27,11 @@ function DataList({ items, activeTab, onDelete, onEdit, userRole }) {
             <>
               <h3>{item.name}</h3>
               <p>Room: {item.room}</p>
-              <GroupSchedule groupId={item._id} userRole={userRole} />
+              <GroupSchedule
+                groupId={item._id}
+                userRole={userRole}
+                getAccessTokenSilently={getAccessTokenSilently}
+              />
             </>
           )}
 

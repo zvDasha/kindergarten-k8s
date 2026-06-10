@@ -383,6 +383,7 @@ function App() {
               onDelete={handleDelete}
               onEdit={handleEditClick}
               userRole={userRole}
+              getAccessTokenSilently={getAccessTokenSilently}
             />
           </>
         )}
