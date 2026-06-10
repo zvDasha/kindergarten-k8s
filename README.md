@@ -2,17 +2,9 @@
 
 Daria Zverieva
 
-# Kindergarten App
-
-**Autor:** Imię Nazwisko
-
-System zarządzania przedszkolem zabezpieczony OAuth 2.0 z Auth0.
-
----
-
 ## Jak uruchomić
 
-### Docker Compose (najprościej)
+### Docker Compose
 
 ```bash
 cp .env.example .env
@@ -33,5 +25,5 @@ minikube start
 minikube addons enable ingress
 kubectl apply -f k8s/namespace.yaml
 kubectl apply -f k8s/
-minikube ip   # ten adres w przeglądarce
+minikube ip
 ```

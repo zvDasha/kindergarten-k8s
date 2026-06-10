@@ -6,7 +6,7 @@
 
 **Gdzie:** `backend/index.js`, linie 25–28
 
-Zamiast własnego JWT (`jsonwebtoken`) używamy biblioteki `express-oauth2-jwt-bearer`, która automatycznie pobiera klucze publiczne z Auth0 i weryfikuje każdy token.
+Zamiast własnego JWT (`jsonwebtoken`) używałam biblioteki `express-oauth2-jwt-bearer`, która automatycznie pobiera klucze publiczne z Auth0 i weryfikuje każdy token.
 
 ```js
 const checkJwt = auth({
@@ -83,7 +83,7 @@ Dostępny bez tokenu — służy do sprawdzenia czy serwer działa (health check
 
 **Gdzie:** `frontend/src/main.jsx`, `frontend/src/App.jsx`
 
-Frontend to aplikacja React. Używa biblioteki `@auth0/auth0-react`. Przy każdym żądaniu do API pobiera token i dołącza go do nagłówka:
+Frontend to aplikacja na React. Używa biblioteki `@auth0/auth0-react`. Przy każdym żądaniu do API pobiera token i dołącza go do nagłówka:
 
 ```js
 // App.jsx, linia 53
@@ -132,8 +132,8 @@ PKCE (Proof Key for Code Exchange) jest włączone automatycznie przez `@auth0/a
 **Przebieg:**
 
 ```
-1. Użytkownik klika "Log In"
-   → przeglądarka generuje losowy code_verifier (np. 128 znaków)
+1. Klikam "Log In"
+   → przeglądarka generuje losowy code_verifier
    → liczy code_challenge = BASE64URL(SHA256(code_verifier))
 
 2. Przeglądarka przekierowuje do Auth0:
@@ -197,11 +197,9 @@ Testowane scenariusze:
 
 **CI/CD:** `.github/workflows/main.yml` — uruchamia się przy każdym `git push`:
 
+Auth0 jest serwisem chmurowym — nie działa jako kontener w projekcie, więc nie można dodać do niego wolumenu bezpośrednio. Dane związane z autoryzacją (użytkownicy, role, powiązania) są przechowywane w MongoDB, która ma skonfigurowany persistent volume — zarówno w Docker Compose (mongo_data), jak i w Kubernetes (PersistentVolumeClaim w StatefulSet). Dane nie giną po restarcie.
+
 ```
 1. Uruchom testy (npm test)
-2. Zbuduj obrazy Docker dla backend i frontend
-3. Wypchnij obrazy do GitHub Container Registry (ghcr.io)
-4. Uruchom minikube
-5. Zadeploy na Kubernetes (kubectl apply -f k8s/)
-6. Poczekaj na rollout i pokaż stan podów
+
 ```
